@@ -1,6 +1,18 @@
-Hello!
+##Swiss Pairing Tournament
+* provides database and basic functions for a swiss pairing tournament
 
-This folder contains the files for the tournament project. 
+###Files
+- tournament.py
+- tournament.sql
+- tournament_test.py
 
-Please check the tournament.py for the python functions,
-and tournament.sql for the sql code that was used to create the tables and views. 
+###To run
+* need to have postgresql installed
+* to set up databases and tables, run in psql:
+```
+\i tournament.sql
+```
+* to test, run:
+```
+python tournament_test.py
+```
