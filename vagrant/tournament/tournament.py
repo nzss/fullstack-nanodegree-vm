@@ -110,7 +110,7 @@ def swissPairings():
     """
     conn = connect()
     c = conn.cursor()
-    query = "select id, name from standings;"
+    query = "select * from standings order by num_matches desc, score desc;"
     c.execute(query)
     result = c.fetchall()
     conn.close()

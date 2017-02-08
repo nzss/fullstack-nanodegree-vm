@@ -7,15 +7,25 @@
 -- these lines here.
 
 -- create database
+drop database if exists tournament;
 create database tournament;
 
 -- connect to db:
 \c tournament;
 
+--drop tables/ views if exists: 
+drop table if exists players cascade;
+drop table if exists matches cascade;
+drop view if exists players_score cascade;
+drop view if exists player1_matches cascade;
+drop view if exists player2_matches cascade;
+drop view if exists match_agg cascade;
+drop view if exists standings cascade;
+
+
 -- create tables:
 create table players (id serial, name text);
 create table matches (id serial, player1 int, player2 int, winner int);
---drop table if exists players;
 
 -- create views:
 create view players_score as 
