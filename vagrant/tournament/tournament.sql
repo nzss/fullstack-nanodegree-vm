@@ -17,15 +17,15 @@ create database tournament;
 drop table if exists players cascade;
 drop table if exists matches cascade;
 drop view if exists players_score cascade;
-drop view if exists player1_matches cascade;
-drop view if exists player2_matches cascade;
+drop view if exists winner_matches cascade;
+drop view if exists loser_matches cascade;
 drop view if exists match_agg cascade;
 drop view if exists standings cascade;
 
 
 -- create tables:
-create table players (id serial, name text);
-create table matches (id serial, player1 int, player2 int, winner int);
+create table players (id serial primary key, name text);
+create table matches (id serial, winner int references players(id), loser int references players(id));
 
 -- create views:
 create view players_score as 
@@ -35,22 +35,22 @@ create view players_score as
 	group by players.id
 	order by score desc;
 
-create view player1_matches as 
-	select players.id, count(player1) as count1 
+create view winner_matches as 
+	select players.id, count(winner) as count1 
 	from (players left join matches 
-	on players.id = matches.player1) 
+	on players.id = matches.winner) 
 	group by players.id;
 
-create view player2_matches as 
-	select players.id, count(player2) as count2 
+create view loser_matches as 
+	select players.id, count(loser) as count2 
 	from (players left join matches 
-	on players.id = matches.player2) 
+	on players.id = matches.loser) 
 	group by players.id;
 
 create view match_agg as 
-	select player1_matches.id, count1 + count2 as num_matches 
-	from (player1_matches full outer join player2_matches 
-	on player1_matches.id = player2_matches.id);
+	select winner_matches.id, count1 + count2 as num_matches 
+	from (winner_matches full outer join loser_matches 
+	on winner_matches.id = loser_matches.id);
 
 create view standings as 
 	select players_name_score.id, players_name_score.name, players_name_score.score, match_agg.num_matches
